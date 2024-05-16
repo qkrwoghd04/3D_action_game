@@ -94,6 +94,7 @@ public class Player : MonoBehaviour
         Attack();
     }
 
+    
     void ClickMove()
     {
         if (Input.GetMouseButtonDown(1))

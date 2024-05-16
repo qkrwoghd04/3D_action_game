@@ -46,4 +46,23 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject, 4);
         }
     }
+
+    IEnumerator OnDamageGrenade(Vector3 reactVec){
+        mat.color = Color.yellow;
+        yield return new WaitForSeconds(0.1f);
+
+        if(curHealth > 0){
+            mat.color = Color.white;
+        }
+        else{
+            mat.color = Color.gray;
+            Destroy(gameObject, 4);
+        }
+    }
+
+    public void HitByGrenade(Vector3 explosionPos){
+        curHealth -= 100;
+        Vector3 reactVec = transform.position - explosionPos;
+        StartCoroutine(OnDamageGrenade(reactVec));
+    }
 }
