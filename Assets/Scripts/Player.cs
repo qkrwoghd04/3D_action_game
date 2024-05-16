@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     bool isFireReady = true;
     float fireDelay;
     int equipIndex = -1;
+    bool isBorder;
 
     [Header("Player info")]
     public float speed;
@@ -31,13 +32,40 @@ public class Player : MonoBehaviour
     Coroutine draw;
     GameObject nearObject;
     Weapon equipSkill;
+    Rigidbody rigid;
     // Start is called before the first frame update
     void Start()
     {
 
     }
 
-    void GetInput(){
+    void FreezeRotation()
+    {
+        rigid.angularVelocity = Vector3.zero;
+    }
+    void StopToWall()
+    {
+        Debug.DrawRay(transform.position, transform.forward * 3, Color.green);
+        isBorder = Physics.Raycast(transform.position, transform.forward, 3, LayerMask.GetMask("Wall"));
+    }
+    void FixedUpdate()
+    {
+        FreezeRotation();
+        StopToWall();
+
+        // 벽에 부딪혔을 때 이동 중지
+        if (isBorder)
+        {
+            agent.isStopped = true;
+            anim.SetBool("isRun", true); // 계속 "run" 상태 유지
+        }
+        else
+        {
+            agent.isStopped = false;
+        }
+    }
+    void GetInput()
+    {
         sDown1 = Input.GetButtonDown("Swap1");
         sDown2 = Input.GetButtonDown("Swap2");
         sDown3 = Input.GetButtonDown("Swap3");
@@ -49,6 +77,7 @@ public class Player : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         agent = GetComponent<NavMeshAgent>();
         lr = GetComponent<LineRenderer>();
+        rigid = GetComponent<Rigidbody>();
         lr.startWidth = 0.1f;
         lr.endWidth = 0.1f;
         lr.material.color = Color.green;
@@ -65,7 +94,8 @@ public class Player : MonoBehaviour
         Attack();
     }
 
-    void ClickMove(){
+    void ClickMove()
+    {
         if (Input.GetMouseButtonDown(1))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -129,26 +159,29 @@ public class Player : MonoBehaviour
         }
     }
 
-    void SwapOut(){
+    void SwapOut()
+    {
         isSwap = false;
     }
 
-    void Swap(){
+    void Swap()
+    {
 
-        if(sDown1 && (!hasSkills[0] || equipIndex == 0)) return;
-        if(sDown2 && (!hasSkills[1] || equipIndex == 1)) return;
-        if(sDown3 && (!hasSkills[2] || equipIndex == 2)) return;
-        if(sDown4 && (!hasSkills[3] || equipIndex == 3)) return;
-        
+        if (sDown1 && (!hasSkills[0] || equipIndex == 0)) return;
+        if (sDown2 && (!hasSkills[1] || equipIndex == 1)) return;
+        if (sDown3 && (!hasSkills[2] || equipIndex == 2)) return;
+        if (sDown4 && (!hasSkills[3] || equipIndex == 3)) return;
+
         int skillIndex = -1;
-        if(sDown1) skillIndex = 0;
-        if(sDown2) skillIndex = 1;
-        if(sDown3) skillIndex = 2;
-        if(sDown4) skillIndex = 3;
-        
-        
-        if(sDown1 || sDown2 || sDown3 || sDown4){
-            if(equipSkill != null) equipSkill.gameObject.SetActive(false);
+        if (sDown1) skillIndex = 0;
+        if (sDown2) skillIndex = 1;
+        if (sDown3) skillIndex = 2;
+        if (sDown4) skillIndex = 3;
+
+
+        if (sDown1 || sDown2 || sDown3 || sDown4)
+        {
+            if (equipSkill != null) equipSkill.gameObject.SetActive(false);
 
             equipIndex = skillIndex;
             equipSkill = skills[skillIndex].GetComponent<Weapon>();
@@ -177,13 +210,15 @@ public class Player : MonoBehaviour
 
     }
 
-    void Attack(){
-        if(equipSkill == null) return;
+    void Attack()
+    {
+        if (equipSkill == null) return;
 
         fireDelay += Time.deltaTime;
         isFireReady = equipSkill.attackSpeed < fireDelay;
 
-        if(isFireReady && !isSwap && Input.GetMouseButtonDown(0)){
+        if (isFireReady && !isSwap && Input.GetMouseButtonDown(0))
+        {
             equipSkill.Use();
             anim.SetTrigger(equipSkill.type == Weapon.Type.Melee ? "doSwing" : "doShot");
             fireDelay = 0;

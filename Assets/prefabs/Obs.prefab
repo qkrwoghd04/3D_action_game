@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6156323285990172846}
   - component: {fileID: 1994075596719946917}
   - component: {fileID: 7925702536215079655}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: Mesh Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,9 +115,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8538868987322488753}
   - component: {fileID: 635708820313316097}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: Obs
-  m_TagString: Obstacle
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
