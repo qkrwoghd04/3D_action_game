@@ -13,18 +13,24 @@ public class Player : MonoBehaviour
     bool sDown2;
     bool sDown3;
     bool sDown4;
-    // bool sDown5;
     bool isSwap;
-    int equipedIndex = -1;
-    [Header("Others")]
+    bool isFireReady = true;
+    float fireDelay;
+    int equipIndex = -1;
+
+    [Header("Player info")]
     public float speed;
+    public int health;
+    public int maxHealth;
+
+    [Header("Others")]
     NavMeshAgent agent;
     Animator anim;
     public Transform spot;
     LineRenderer lr;
     Coroutine draw;
     GameObject nearObject;
-    GameObject equiped;
+    Weapon equipSkill;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,7 +42,6 @@ public class Player : MonoBehaviour
         sDown2 = Input.GetButtonDown("Swap2");
         sDown3 = Input.GetButtonDown("Swap3");
         sDown4 = Input.GetButtonDown("Swap4");
-        // sDown3 = Input.GetButtonDown("Swap5");
     }
 
     void Awake()
@@ -56,8 +61,8 @@ public class Player : MonoBehaviour
         GetInput();
         Swap();
         ClickMove();
-        Interat();
-
+        Interact();
+        Attack();
     }
 
     void ClickMove(){
@@ -130,24 +135,24 @@ public class Player : MonoBehaviour
 
     void Swap(){
 
-        if(sDown1 && (!hasSkills[0] || equipedIndex == 0)) return;
-        if(sDown2 && (!hasSkills[1] || equipedIndex == 1)) return;
-        if(sDown3 && (!hasSkills[2] || equipedIndex == 2)) return;
-        if(sDown4 && (!hasSkills[3] || equipedIndex == 3)) return;
-        // if(sDown1 && (!hasSkills[4] || equipedIndex == 4)) return;
+        if(sDown1 && (!hasSkills[0] || equipIndex == 0)) return;
+        if(sDown2 && (!hasSkills[1] || equipIndex == 1)) return;
+        if(sDown3 && (!hasSkills[2] || equipIndex == 2)) return;
+        if(sDown4 && (!hasSkills[3] || equipIndex == 3)) return;
+        
         int skillIndex = -1;
         if(sDown1) skillIndex = 0;
         if(sDown2) skillIndex = 1;
         if(sDown3) skillIndex = 2;
         if(sDown4) skillIndex = 3;
-        // if(sDown5) skillIndex = 4;
+        
         
         if(sDown1 || sDown2 || sDown3 || sDown4){
-            if(equiped != null) equiped.SetActive(false);
+            if(equipSkill != null) equipSkill.gameObject.SetActive(false);
 
-            equipedIndex = skillIndex;
-            equiped = skills[skillIndex];
-            skills[skillIndex].SetActive(true);
+            equipIndex = skillIndex;
+            equipSkill = skills[skillIndex].GetComponent<Weapon>();
+            skills[skillIndex].gameObject.SetActive(true);
 
             anim.SetTrigger("doSwap");
 
@@ -156,7 +161,7 @@ public class Player : MonoBehaviour
             Invoke("SwapOut", 0.4f);
         }
     }
-    void Interat()
+    void Interact()
     {
         if (nearObject != null && nearObject.CompareTag("Skill"))
         {
@@ -170,5 +175,18 @@ public class Player : MonoBehaviour
             }
         }
 
+    }
+
+    void Attack(){
+        if(equipSkill == null) return;
+
+        fireDelay += Time.deltaTime;
+        isFireReady = equipSkill.attackSpeed < fireDelay;
+
+        if(isFireReady && !isSwap && Input.GetMouseButtonDown(0)){
+            equipSkill.Use();
+            anim.SetTrigger(equipSkill.type == Weapon.Type.Melee ? "doSwing" : "doShot");
+            fireDelay = 0;
+        }
     }
 }
