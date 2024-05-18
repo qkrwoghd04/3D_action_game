@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     float fireDelay;
     int equipIndex = -1;
     bool isBorder;
+    bool isDamage;
 
     [Header("Player info")]
     public float speed;
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
     [Header("Others")]
     NavMeshAgent agent;
     Animator anim;
+    MeshRenderer[] meshs;
     public Transform spot;
     LineRenderer lr;
     Coroutine draw;
@@ -78,6 +80,7 @@ public class Player : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         lr = GetComponent<LineRenderer>();
         rigid = GetComponent<Rigidbody>();
+        meshs = GetComponentsInChildren<MeshRenderer>();
         lr.startWidth = 0.1f;
         lr.endWidth = 0.1f;
         lr.material.color = Color.green;
@@ -159,7 +162,31 @@ public class Player : MonoBehaviour
             nearObject = null;
         }
     }
+    void OnTriggerEnter(Collider other) {
+        if(other.tag == "EnemyBullet"){
+            if(!isDamage){
+                Bullet enemyBullet = other.GetComponent<Bullet>();
+                health -= enemyBullet.damage;
+                if(other.GetComponent<Rigidbody>() != null){
+                    Destroy(other.gameObject);
+                }
+                StartCoroutine(OnDamage());
+            }
+        }
+    }
 
+    IEnumerator OnDamage(){
+        isDamage = true;
+        foreach(MeshRenderer mesh in meshs){
+            mesh.material.color = Color.red;
+        }
+        yield return new WaitForSeconds(1f);
+
+        isDamage = false;
+        foreach(MeshRenderer mesh in meshs){
+            mesh.material.color = Color.white;
+        }
+    }
     void SwapOut()
     {
         isSwap = false;

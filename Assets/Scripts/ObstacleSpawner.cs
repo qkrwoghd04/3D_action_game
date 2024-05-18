@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ObstacleSpawner : MonoBehaviour
 {
@@ -8,7 +10,8 @@ public class ObstacleSpawner : MonoBehaviour
     public int obstacleCount = 20;
     public int tallObstacleCount = 5;
 
-    private float bossRadius = 2f; // 보스의 반경
+    private float bossRadius = 4f; // 보스의 반경
+    
 
     void Start()
     {

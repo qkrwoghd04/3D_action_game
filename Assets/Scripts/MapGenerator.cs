@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MapGenerator : MonoBehaviour
 {
     public int mapSize = 31;
     public GameObject obstaclePrefab;
     public GameObject tallObstaclePrefab;
-
+    public NavMeshSurface navMeshSurface; 
     private void Start()
     {
         GenerateMap();
@@ -22,6 +24,9 @@ public class MapGenerator : MonoBehaviour
 
         // Generate obstacles
         GenerateObstacles();
+
+         // Bake the NavMesh
+        navMeshSurface.BuildNavMesh();
     }
 
     void GenerateObstacles()
