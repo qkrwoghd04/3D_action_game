@@ -24,6 +24,10 @@ public class Player : MonoBehaviour
     public float speed;
     public int health;
     public int maxHealth;
+    public int score;
+    public int coin;
+    public int ammo;
+    public Weapon equipSkill;
 
     [Header("Others")]
     NavMeshAgent agent;
@@ -33,7 +37,6 @@ public class Player : MonoBehaviour
     LineRenderer lr;
     Coroutine draw;
     GameObject nearObject;
-    Weapon equipSkill;
     Rigidbody rigid;
     // Start is called before the first frame update
     void Start()
@@ -81,6 +84,9 @@ public class Player : MonoBehaviour
         lr = GetComponent<LineRenderer>();
         rigid = GetComponent<Rigidbody>();
         meshs = GetComponentsInChildren<MeshRenderer>();
+
+        // PlayerPrefs.SetInt("MaxScore", 112500);
+        Debug.Log(PlayerPrefs.GetInt("MaxScore"));
         lr.startWidth = 0.1f;
         lr.endWidth = 0.1f;
         lr.material.color = Color.green;
