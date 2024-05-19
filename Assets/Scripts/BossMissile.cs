@@ -9,10 +9,16 @@ public class BossMissile : Bullet
     void Awake()
     {
         nav = GetComponent<NavMeshAgent>();
+        Invoke("DestroyMissile", 5f);
     }
     void Update()
     {
         nav.SetDestination(target.position);
     }
 
-}
+     void DestroyMissile()
+    {
+        // 미사일을 파괴합니다.
+        Destroy(gameObject);
+    }
+}   

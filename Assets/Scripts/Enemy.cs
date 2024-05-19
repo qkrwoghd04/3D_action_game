@@ -110,7 +110,11 @@ public class Enemy : MonoBehaviour
 
                 yield return new WaitForSeconds(0.5f);
                 rigid.velocity = Vector3.zero;
-                meleeArea.enabled = false;
+                if (meleeArea != null)
+                {
+                    meleeArea.enabled = false;
+                }
+
 
                 yield return new WaitForSeconds(2f);
                 break;
@@ -207,6 +211,7 @@ public class Enemy : MonoBehaviour
         else
         {
             foreach (MeshRenderer mesh in meshs) mesh.material.color = Color.gray;
+            isDead = true;
             isChase = false;
             nav.enabled = false;
             anim.SetTrigger("doDie");

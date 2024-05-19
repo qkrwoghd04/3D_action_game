@@ -22,12 +22,11 @@ public class BossRock : Bullet
 
     IEnumerator GainPower(){
         while(!isShoot){
-            angularPower += 0.02f;
-            scaleValue += 0.005f;
+            angularPower += 0.8f;
+            scaleValue += 0.008f;
             transform.localScale = Vector3.one * scaleValue;
             rigid.AddTorque(transform.right * angularPower, ForceMode.Acceleration);
             yield return null;
         }
     }
-
 }

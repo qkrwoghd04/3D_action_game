@@ -11,8 +11,9 @@ public class Boss : Enemy
     public Transform missilePortB;
     public bool isLook;
 
+    public GameObject tauntRangeIndicator; // 도발 범위 표시기에 대한 참조
     Vector3 lookVec;
-    Vector3 tauntVec;
+    // Vector3 tauntVec;
 
     void Awake()
     {
@@ -23,6 +24,7 @@ public class Boss : Enemy
         anim = GetComponentInChildren<Animator>();
 
         nav.isStopped = true;
+
         StartCoroutine(Think());
     }
 
@@ -39,9 +41,9 @@ public class Boss : Enemy
             lookVec = new Vector3(h,0,v) * 5f;
             transform.LookAt(target.position + lookVec);
         }
-        else{
-            nav.SetDestination(tauntVec);
-        }
+        // else{
+        //     nav.SetDestination(tauntVec);
+        // }
     }
 
     IEnumerator Think(){
@@ -90,7 +92,7 @@ public class Boss : Enemy
         
     }
     IEnumerator Taunt(){
-        tauntVec = target.position + lookVec;
+        // tauntVec = target.position + lookVec;
 
         isLook = false;
         nav.isStopped = false;
@@ -99,10 +101,15 @@ public class Boss : Enemy
             boxCollider.enabled = false;
         }
         anim.SetTrigger("doTaunt");
+        tauntRangeIndicator.SetActive(true); // 표시기를 활성화합니다.
+
         yield return new WaitForSeconds(1.5f);
         meleeArea.enabled = true;
+
         yield return new WaitForSeconds(0.5f);
         meleeArea.enabled = false;
+        tauntRangeIndicator.SetActive(false); // 표시기를 비활성화합니다.
+
         yield return new WaitForSeconds(1f);
         isLook = true;
         nav.isStopped = true;

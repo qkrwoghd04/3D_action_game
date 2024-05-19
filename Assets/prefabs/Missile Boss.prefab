@@ -4952,6 +4952,7 @@ MonoBehaviour:
   damage: 20
   isMelee: 0
   isRock: 0
+  isMissile: 1
   target: {fileID: 0}
 --- !u!1 &7382193457967452374
 GameObject:

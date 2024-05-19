@@ -13,6 +13,7 @@ TagManager:
   - Bullet
   - Enemy
   - EnemyBullet
+  - BossAttack
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - Wall
   - Enemy
   - EnemyBullet
-  - 
+  - BossAttack
   - 
   - 
   - 
