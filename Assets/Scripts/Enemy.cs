@@ -169,16 +169,16 @@ public class Enemy : MonoBehaviour
         {
             Weapon weapon = other.GetComponent<Weapon>();
             curHealth -= weapon.damage;
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
             StartCoroutine(OnDamage());
-            Debug.Log("Melee: " + curHealth);
         }
         else if (other.tag == "Bullet")
         {
             Bullet bullet = other.GetComponent<Bullet>();
             curHealth -= bullet.damage;
             Destroy(other.gameObject);
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
             StartCoroutine(OnDamage());
-            Debug.Log("Range: " + curHealth);
         }
     }
 

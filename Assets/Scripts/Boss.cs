@@ -51,6 +51,7 @@ public class Boss : Enemy
             hasStarted = true;
             StartCoroutine(Think());
         }
+
         // else{
         //     nav.SetDestination(tauntVec);
         // }

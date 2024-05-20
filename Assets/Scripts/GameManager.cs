@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public int stage;
     public float playTime;
     public bool isBattle;
+    public bool isTraining;
     public GameObject obstacleSpawner;
 
     [Header("Menu Panel")]
@@ -58,11 +59,14 @@ public class GameManager : MonoBehaviour
         gamePanel.SetActive(true);
 
         boss.isStart = true;
-        player.isTraining = false;
         player.gameObject.SetActive(true);
         obstacleSpawner.gameObject.SetActive(true);
-    }
 
+        isTraining = false;
+        AudioManager.instance.PlayBgm(true);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+    }
+    
     public void GameOver()
     {
         gamePanel.SetActive(false);
@@ -74,6 +78,7 @@ public class GameManager : MonoBehaviour
             bestText.gameObject.SetActive(true);
             PlayerPrefs.SetInt("MaxScore", player.score);
         }
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Lose);
 
     }
 
@@ -84,7 +89,6 @@ public class GameManager : MonoBehaviour
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
 
-        player.isTraining = true;
         player.gameObject.SetActive(true);
 
         player.hasSkills[0] = true;
@@ -97,10 +101,13 @@ public class GameManager : MonoBehaviour
         weapon3Img.color = new Color(1, 1, 1, player.hasSkills[2] ? 1 : 0);
         weapon4Img.color = new Color(1, 1, 1, player.hasSkills[3] ? 1 : 0);
 
+        isTraining = true;
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
     }
 
     public void ReStart(){
         SceneManager.LoadScene(0);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
     }
 
     public void Enter()
@@ -119,6 +126,13 @@ public class GameManager : MonoBehaviour
         if (isBattle)
         {
             playTime += Time.deltaTime;
+        }
+
+        // 트레이닝 모드에서 체력 관리
+        if (isTraining)
+        {
+            player.health = player.maxHealth;
+            boss.curHealth = boss.maxHealth; 
         }
     }
 

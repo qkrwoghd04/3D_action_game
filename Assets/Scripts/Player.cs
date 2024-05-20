@@ -21,7 +21,6 @@ public class Player : MonoBehaviour
     bool isBorder;
     bool isDamage;
     bool isDead;
-    public bool isTraining;
 
     [Header("Player info")]
     public float speed;
@@ -90,22 +89,11 @@ public class Player : MonoBehaviour
         lr.material.color = Color.green;
         lr.enabled = false;
 
-        if (isTraining)
-        {
-            maxHealth = int.MaxValue; // 최대값으로 설정
-            health = maxHealth;
-        }
-        else
-        {
-            maxHealth = 200;
-            health = 200;
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isTraining && health != maxHealth) health = maxHealth;
         GetInput();
         Swap();
         ClickMove();
@@ -184,6 +172,7 @@ public class Player : MonoBehaviour
             if(!isDamage){
                 Bullet enemyBullet = other.GetComponent<Bullet>();
                 health -= enemyBullet.damage;
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
                 StartCoroutine(OnDamage());
             }
             if(other.GetComponent<Rigidbody>() != null){
@@ -277,6 +266,7 @@ public class Player : MonoBehaviour
             equipSkill.Use();
             anim.SetTrigger(equipSkill.type == Weapon.Type.Melee ? "doSwing" : "doShot");
             fireDelay = 0;
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
         }
     }
 }
