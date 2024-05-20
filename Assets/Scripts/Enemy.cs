@@ -11,15 +11,18 @@ public class Enemy : MonoBehaviour
     public Type enemyType;
     public int maxHealth;
     public int curHealth;
+    public int score;
     public Transform target;
     public GameObject bullet;
+    // public GameObject[] coin;
+
     public bool isChase;
     public bool isAttack;
     public bool isDead;
+    
     public BoxCollider meleeArea;
-
-    public Rigidbody rigid;
     public BoxCollider boxCollider;
+    public Rigidbody rigid;
     public MeshRenderer[] meshs;
     public NavMeshAgent nav;
     public Animator anim;
@@ -33,8 +36,8 @@ public class Enemy : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
 
         if (enemyType != Type.D){
-            Invoke("ChaseStart", 2);    
-        } 
+            Invoke("ChaseStart", 1);    
+        }
         // nav.updatePosition = false;
     }
 
@@ -45,13 +48,16 @@ public class Enemy : MonoBehaviour
             nav.SetDestination(target.position);
             nav.isStopped = !isChase;
         }
+
     }
     void FixedUpdate()
     {
         Targeting();
         FreezeVelocity();
     }
-
+    /// <summary>
+    /// 몬스터들이 사용자를 추적하는 함수 각 enemy에 따라 로직이 다름 IEnumerator Attack을 호출함
+    /// </summary>
     void Targeting()
     {
 
@@ -132,6 +138,9 @@ public class Enemy : MonoBehaviour
         anim.SetBool("isAttack", false);
     }
 
+    /// <summary>
+    /// animation 을 호출하고 따라감
+    /// </summary>
     void ChaseStart()
     {
         if (target != null)
@@ -189,10 +198,21 @@ public class Enemy : MonoBehaviour
             isChase = false;
             nav.enabled = false;
             anim.SetTrigger("doDie");
+             //동전 떨구는 로직
+            // Player player = target.GetComponent<Player>();
+            // player.score += score;
+            // int ranCoin = Random.Range(0,3);
+            // Instantiate(coin[ranCoin], transform.position, Quaternion.identity);
             if (enemyType != Type.D) Destroy(gameObject, 4);
         }
     }
 
+    public void HitByGrenade(Vector3 explosionPos)
+    {
+        curHealth -= 100;
+        Vector3 reactVec = transform.position - explosionPos;
+        StartCoroutine(OnDamageGrenade(reactVec));
+    }
     IEnumerator OnDamageGrenade(Vector3 reactVec)
     {
         foreach (MeshRenderer mesh in meshs) mesh.material.color = Color.red;
@@ -215,16 +235,14 @@ public class Enemy : MonoBehaviour
             isChase = false;
             nav.enabled = false;
             anim.SetTrigger("doDie");
+            //동전 떨구는 로직
+            // Player player = target.GetComponent<Player>();
+            // player.score += score;
+            // int ranCoin = Random.Range(0,3);
+            // Instantiate(coin[ranCoin], transform.position, Quaternion.identity);
             if (enemyType != Type.D){
                 Destroy(gameObject, 4);
             } 
         }
-    }
-
-    public void HitByGrenade(Vector3 explosionPos)
-    {
-        curHealth -= 100;
-        Vector3 reactVec = transform.position - explosionPos;
-        StartCoroutine(OnDamageGrenade(reactVec));
     }
 }

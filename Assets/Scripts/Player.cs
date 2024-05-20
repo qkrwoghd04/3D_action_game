@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,6 +20,8 @@ public class Player : MonoBehaviour
     int equipIndex = -1;
     bool isBorder;
     bool isDamage;
+    bool isDead;
+    public bool isTraining;
 
     [Header("Player info")]
     public float speed;
@@ -33,16 +36,13 @@ public class Player : MonoBehaviour
     NavMeshAgent agent;
     Animator anim;
     MeshRenderer[] meshs;
+    public GameManager manager;
     public Transform spot;
     LineRenderer lr;
     Coroutine draw;
     GameObject nearObject;
     Rigidbody rigid;
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
 
     void FreezeRotation()
     {
@@ -85,28 +85,39 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         meshs = GetComponentsInChildren<MeshRenderer>();
 
-        // PlayerPrefs.SetInt("MaxScore", 112500);
-        Debug.Log(PlayerPrefs.GetInt("MaxScore"));
         lr.startWidth = 0.1f;
         lr.endWidth = 0.1f;
         lr.material.color = Color.green;
         lr.enabled = false;
+
+        if (isTraining)
+        {
+            maxHealth = int.MaxValue; // 최대값으로 설정
+            health = maxHealth;
+        }
+        else
+        {
+            maxHealth = 200;
+            health = 200;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (isTraining && health != maxHealth) health = maxHealth;
         GetInput();
         Swap();
         ClickMove();
         Interact();
         Attack();
+        
     }
 
     
     void ClickMove()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && !isDead)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -186,12 +197,22 @@ public class Player : MonoBehaviour
         foreach(MeshRenderer mesh in meshs){
             mesh.material.color = Color.red;
         }
+        if(health <= 0 && !isDead){
+            OnDie();
+        }
         yield return new WaitForSeconds(1f);
 
         isDamage = false;
         foreach(MeshRenderer mesh in meshs){
             mesh.material.color = Color.white;
         }
+
+    }
+
+    void OnDie(){
+        anim.SetTrigger("doDie");
+        isDead = true;
+        manager.GameOver();
     }
     void SwapOut()
     {
@@ -200,7 +221,7 @@ public class Player : MonoBehaviour
 
     void Swap()
     {
-
+        if(isDead) return;
         if (sDown1 && (!hasSkills[0] || equipIndex == 0)) return;
         if (sDown2 && (!hasSkills[1] || equipIndex == 1)) return;
         if (sDown3 && (!hasSkills[2] || equipIndex == 2)) return;
@@ -230,7 +251,7 @@ public class Player : MonoBehaviour
     }
     void Interact()
     {
-        if (nearObject != null && nearObject.CompareTag("Skill"))
+        if (!isDead && nearObject != null && nearObject.CompareTag("Skill"))
         {
             Item item = nearObject.GetComponent<Item>();
             if (item != null && item.type == Item.Type.Skill)

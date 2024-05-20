@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
     [Header("Menu Panel")]
     public GameObject menuPanel;
     public GameObject gamePanel;
+    public GameObject overPanel;
     public Text maxScoreTxt;
 
     [Header("Game Panel")]
@@ -34,11 +36,17 @@ public class GameManager : MonoBehaviour
     public RectTransform bossHealthGroup;
     public RectTransform bossHealthBar;
     public RectTransform uiGroup;
+    public Text curScroeText;
+    public Text bestText;
 
 
     void Awake()
     {
         maxScoreTxt.text = string.Format("{0:n0}", PlayerPrefs.GetInt("MaxScore"));
+
+        if(PlayerPrefs.HasKey("MaxScore")){
+            PlayerPrefs.SetInt("MaxScore", 0);
+        }
     }
 
     public void GameStart()
@@ -49,8 +57,50 @@ public class GameManager : MonoBehaviour
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
 
+        boss.isStart = true;
+        player.isTraining = false;
         player.gameObject.SetActive(true);
         obstacleSpawner.gameObject.SetActive(true);
+    }
+
+    public void GameOver()
+    {
+        gamePanel.SetActive(false);
+        overPanel.SetActive(true);
+        curScroeText.text = scoreTxt.text;
+
+        int maxScore = PlayerPrefs.GetInt("MaxScore");
+        if(player.score > maxScore){
+            bestText.gameObject.SetActive(true);
+            PlayerPrefs.SetInt("MaxScore", player.score);
+        }
+
+    }
+
+    public void TrainingGround(){
+        menuCam.SetActive(false);
+        gameCam.SetActive(true);
+
+        menuPanel.SetActive(false);
+        gamePanel.SetActive(true);
+
+        player.isTraining = true;
+        player.gameObject.SetActive(true);
+
+        player.hasSkills[0] = true;
+        player.hasSkills[1] = true;
+        player.hasSkills[2] = true;
+        player.hasSkills[3] = true;
+
+        weapon1Img.color = new Color(1, 1, 1, player.hasSkills[0] ? 1 : 0);
+        weapon2Img.color = new Color(1, 1, 1, player.hasSkills[1] ? 1 : 0);
+        weapon3Img.color = new Color(1, 1, 1, player.hasSkills[2] ? 1 : 0);
+        weapon4Img.color = new Color(1, 1, 1, player.hasSkills[3] ? 1 : 0);
+
+    }
+
+    public void ReStart(){
+        SceneManager.LoadScene(0);
     }
 
     public void Enter()
