@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public enum Type {Melee, Range, Throw}
+    public enum Type { Melee, Shot, ParabolaShot, Throw }
     public Type type;
     public int damage;
     public float attackSpeed;
@@ -18,22 +18,32 @@ public class Weapon : MonoBehaviour
     public GameObject bulletCase;
 
 
-    public void Use(){
-        if(type == Type.Melee){
+    public void Use()
+    {
+        if (type == Type.Melee)
+        {
             StopCoroutine("Swing");
             StartCoroutine("Swing");
         }
-        else if(type == Type.Range){
+        else if (type == Type.Shot)
+        {
             StopCoroutine("Shot");
             StartCoroutine("Shot");
         }
-        else if(type == Type.Throw){
+        else if (type == Type.ParabolaShot)
+        {
+            StopCoroutine("ParabolaShot");
+            StartCoroutine("ParabolaShot");
+        }
+        else if (type == Type.Throw)
+        {
             StopCoroutine("Throw");
             StartCoroutine("Throw");
         }
     }
 
-    IEnumerator Swing(){
+    IEnumerator Swing()
+    {
         yield return new WaitForSeconds(0.1f);
         meleeArea.enabled = true;
         trailEffect.enabled = true;
@@ -45,7 +55,8 @@ public class Weapon : MonoBehaviour
         trailEffect.enabled = false;
     }
 
-    IEnumerator Shot(){
+    IEnumerator Shot()
+    {
         GameObject instantBullet = Instantiate(bullet, bulletPos.position, bulletPos.rotation);
         Rigidbody bulletRigid = instantBullet.GetComponent<Rigidbody>();
         bulletRigid.velocity = bulletPos.forward * 50;
@@ -53,22 +64,37 @@ public class Weapon : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         GameObject instantCase = Instantiate(bulletCase, bulletCasePos.position, bulletCasePos.rotation);
         Rigidbody caseRigid = instantCase.GetComponent<Rigidbody>();
-        Vector3 caseVec = bulletCasePos.forward * Random.Range(-3, -2) + Vector3.up * Random.Range(2 , 3);
+        Vector3 caseVec = bulletCasePos.forward * Random.Range(-3, -2) + Vector3.up * Random.Range(2, 3);
         caseRigid.AddForce(caseVec, ForceMode.Impulse);
         caseRigid.AddTorque(Vector3.up * 10, ForceMode.Impulse);
     }
 
-    IEnumerator Throw(){
+    IEnumerator ParabolaShot()
+    {
         GameObject instantBullet = Instantiate(bullet, bulletPos.position, bulletPos.rotation);
         Rigidbody bulletRigid = instantBullet.GetComponent<Rigidbody>();
-        Vector3 throwDirection = bulletPos.forward * 25 + bulletPos.up * 2; // 수직 성분을 20으로 설정
+        bulletRigid.velocity = bulletPos.forward * 100 + bulletPos.up * 15;
+
+        yield return new WaitForSeconds(0.1f);
+        GameObject instantCase = Instantiate(bulletCase, bulletCasePos.position, bulletCasePos.rotation);
+        Rigidbody caseRigid = instantCase.GetComponent<Rigidbody>();
+        Vector3 caseVec = bulletCasePos.forward * Random.Range(-3, -2) + Vector3.up * Random.Range(2, 3);
+        caseRigid.AddForce(caseVec, ForceMode.Impulse);
+        caseRigid.AddTorque(Vector3.up * 10, ForceMode.Impulse);
+    }
+
+    IEnumerator Throw()
+    {
+        GameObject instantBullet = Instantiate(bullet, bulletPos.position, bulletPos.rotation);
+        Rigidbody bulletRigid = instantBullet.GetComponent<Rigidbody>();
+        Vector3 throwDirection = bulletPos.forward * 25 + bulletPos.up * 5; // 수직 성분을 20으로 설정
         bulletRigid.velocity = throwDirection;
 
         yield return new WaitForSeconds(0.1f);
         GameObject instantCase = Instantiate(bulletCase, bulletCasePos.position, bulletCasePos.rotation);
         Rigidbody caseRigid = instantCase.GetComponent<Rigidbody>();
 
-        Vector3 caseVec = bulletCasePos.forward * Random.Range(-3, -2) + Vector3.up * Random.Range(2 , 3);
+        Vector3 caseVec = bulletCasePos.forward * Random.Range(-3, -2) + Vector3.up * Random.Range(2, 3);
         caseRigid.AddForce(caseVec, ForceMode.Impulse);
         caseRigid.AddTorque(Vector3.up * 10, ForceMode.Impulse);
     }
