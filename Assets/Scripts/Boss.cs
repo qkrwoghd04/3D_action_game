@@ -57,7 +57,7 @@ public class Boss : Enemy
         // }
     }
 
-    IEnumerator Think(){
+    public IEnumerator Think(){
         yield return new WaitForSeconds(0.5f);
 
         int ranAction = Random.Range(0, 4);

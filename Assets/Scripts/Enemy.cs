@@ -214,7 +214,7 @@ public class Enemy : MonoBehaviour
 
     public void HitByGrenade(Vector3 explosionPos)
     {
-        curHealth -= 100;
+        curHealth -= 500;
         Vector3 reactVec = transform.position - explosionPos;
         StartCoroutine(OnDamageGrenade(reactVec));
     }

@@ -58,6 +58,11 @@ public class GameManager : MonoBehaviour
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
 
+        player.hasSkills[0] = true;
+        player.hasSkills[1] = true;
+        player.hasSkills[2] = true;
+        player.hasSkills[3] = true;
+
         isBattle = true;
         boss.isStart = true;
         player.gameObject.SetActive(true);
@@ -115,12 +120,14 @@ public class GameManager : MonoBehaviour
     public void Enter()
     {
         uiGroup.anchoredPosition = Vector3.zero;
+        PauseGame(); // 게임 멈추기
 
     }
 
     public void Exit()
     {
         uiGroup.anchoredPosition = Vector3.down * 1000;
+        ResumeGame(); // 게임 재개하기
     }
 
     void Update()
@@ -167,5 +174,41 @@ public class GameManager : MonoBehaviour
         // boss health UI
         float bossHealthNormalized = Mathf.Max((float)boss.curHealth / boss.maxHealth, 0);
         bossHealthBar.localScale = new Vector3(bossHealthNormalized, 1, 1);
+    }
+
+    void PauseGame()
+    {
+        Time.timeScale = 0; // 시간 멈추기
+
+        // 모든 코루틴 멈추기
+        StopAllCoroutines();
+
+        // // Rigidbody 멈추기
+        // Rigidbody[] rigidbodies = FindObjectsOfType<Rigidbody>();
+        // foreach (Rigidbody rb in rigidbodies)
+        // {
+        //     rb.velocity = Vector3.zero;
+        //     rb.angularVelocity = Vector3.zero;
+        // }
+
+        // Animator 멈추기
+        Animator[] animators = FindObjectsOfType<Animator>();
+        foreach (Animator anim in animators)
+        {
+            anim.enabled = false;
+        }
+    }
+
+    void ResumeGame()
+    {
+        Time.timeScale = 1; // 시간 재개하기
+
+        // Animator 재개하기
+        Animator[] animators = FindObjectsOfType<Animator>();
+        foreach (Animator anim in animators)
+        {
+            anim.enabled = true;
+        }
+
     }
 }
