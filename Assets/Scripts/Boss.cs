@@ -110,15 +110,13 @@ public class Boss : Enemy
 
         isLook = false;
         nav.isStopped = false;
-        if (boxCollider != null)
-        {
-            boxCollider.enabled = false;
-        }
+        
         anim.SetTrigger("doTaunt");
         tauntRangeIndicator.SetActive(true); // 표시기를 활성화합니다.
 
         yield return new WaitForSeconds(1.5f);
         meleeArea.enabled = true;
+        boxCollider.enabled = true;
 
         yield return new WaitForSeconds(0.5f);
         meleeArea.enabled = false;
@@ -127,7 +125,7 @@ public class Boss : Enemy
         yield return new WaitForSeconds(1f);
         isLook = true;
         nav.isStopped = true;
-        boxCollider.enabled = true;
+        boxCollider.enabled = false;
         StartCoroutine(Think());
     }
 

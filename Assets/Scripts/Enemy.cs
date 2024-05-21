@@ -181,6 +181,11 @@ public class Enemy : MonoBehaviour
             StartCoroutine(OnDamage());
         }
     }
+    public void TakeDamage(int damage)
+    {
+        curHealth -= damage;
+        StartCoroutine(OnDamage());
+    }
 
     IEnumerator OnDamage()
     {

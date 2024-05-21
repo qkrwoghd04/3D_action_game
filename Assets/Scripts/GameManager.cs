@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
 
+        isBattle = true;
         boss.isStart = true;
         player.gameObject.SetActive(true);
         obstacleSpawner.gameObject.SetActive(true);
@@ -68,7 +69,8 @@ public class GameManager : MonoBehaviour
     }
     
     public void GameOver()
-    {
+    {   
+        isBattle = false;
         gamePanel.SetActive(false);
         overPanel.SetActive(true);
         curScroeText.text = scoreTxt.text;
