@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public enum Type {Skill, Heart}
+    public enum Type {Skill, Coin}
     public Type type;
     public int index;
     // Start is called before the first frame update

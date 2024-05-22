@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class ObstacleSpawner : MonoBehaviour
 {
     public GameObject obstaclePrefab;
-    public int mapSize = 31;
+    public int mapSize = 200;
     public GameObject[] skillCoinPrefabs; // 4가지 Skill Coin 프리팹 배열
     private int maxSkillCoins = 3;
     private int currentSkillCoins = 0;
@@ -15,8 +15,9 @@ public class ObstacleSpawner : MonoBehaviour
     public int obstacleCount = 20;
     public int tallObstacleCount = 5;
 
-    private float bossRadius = 4f; // 보스의 반경
+    private float bossRadius = 5f; // 보스의 반경
     private List<Vector3> obstaclePositions = new List<Vector3>(); // 장애물 위치 저장
+
 
     void Start()
     {
@@ -37,7 +38,6 @@ public class ObstacleSpawner : MonoBehaviour
                 obstaclesPlaced++;
             }
         }
-
         StartCoroutine(SpawnSkillCoin());
     }
 

@@ -263,5 +263,5 @@ MonoBehaviour:
   damage: 50
   isMelee: 0
   isRock: 0
-  isMissile: 0
+  isMissile: 1
   isTaunt: 0

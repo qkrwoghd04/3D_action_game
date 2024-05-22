@@ -158,6 +158,11 @@ public class Player : MonoBehaviour
         {
             nearObject = other.gameObject;
         }
+        if (other.CompareTag("Item"))
+        {
+            nearObject = other.gameObject;
+        }
+    
     }
 
     void OnTriggerExit(Collider other)
@@ -240,7 +245,7 @@ public class Player : MonoBehaviour
     }
     void Interact()
     {
-        if (!isDead && nearObject != null && nearObject.CompareTag("Skill"))
+        if (!isDead && nearObject != null && (nearObject.CompareTag("Skill") || nearObject.CompareTag("Item")))
         {
             Item item = nearObject.GetComponent<Item>();
             if (item != null && item.type == Item.Type.Skill)
@@ -248,6 +253,10 @@ public class Player : MonoBehaviour
                 int skillIndex = item.index;
                 hasSkills[skillIndex] = true;
 
+                Destroy(nearObject);
+            }else if(item != null && item.type == Item.Type.Coin){
+                coin += 1;
+                Debug.Log("Coin :" + coin);
                 Destroy(nearObject);
             }
         }
