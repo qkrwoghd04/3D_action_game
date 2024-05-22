@@ -1,7 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -99,10 +96,24 @@ public class Player : MonoBehaviour
         ClickMove();
         Interact();
         Attack();
-        
+        LookAtMouse();
+
+    }
+     void LookAtMouse()
+    {
+        if (isDead) return;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            Vector3 lookPoint = hit.point;
+            lookPoint.y = transform.position.y; // 높이를 플레이어의 높이와 동일하게 유지합니다.
+            transform.LookAt(lookPoint);
+        }
     }
 
-    
+
     void ClickMove()
     {
         if (Input.GetMouseButtonDown(1) && !isDead)
@@ -138,10 +149,21 @@ public class Player : MonoBehaviour
 
     IEnumerator DrawPath()
     {
+        if (lr == null)
+        {
+            yield break;
+        }
+
         lr.enabled = true;
         yield return null;
+
         while (true)
         {
+            if (lr == null)
+            {
+                yield break;
+            }
+
             int cnt = agent.path.corners.Length;
             lr.positionCount = cnt;
             for (int i = 0; i < cnt; i++)
@@ -151,7 +173,6 @@ public class Player : MonoBehaviour
             yield return null;
         }
     }
-
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Skill"))
@@ -162,7 +183,7 @@ public class Player : MonoBehaviour
         {
             nearObject = other.gameObject;
         }
-    
+
     }
 
     void OnTriggerExit(Collider other)
@@ -172,38 +193,47 @@ public class Player : MonoBehaviour
             nearObject = null;
         }
     }
-    void OnTriggerEnter(Collider other) {
-        if(other.tag == "EnemyBullet"){
-            if(!isDamage){
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "EnemyBullet")
+        {
+            if (!isDamage)
+            {
                 Bullet enemyBullet = other.GetComponent<Bullet>();
                 health -= enemyBullet.damage;
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
                 StartCoroutine(OnDamage());
             }
-            if(other.GetComponent<Rigidbody>() != null){
+            if (other.GetComponent<Rigidbody>() != null)
+            {
                 Destroy(other.gameObject);
             }
         }
     }
 
-    IEnumerator OnDamage(){
+    IEnumerator OnDamage()
+    {
         isDamage = true;
-        foreach(MeshRenderer mesh in meshs){
+        foreach (MeshRenderer mesh in meshs)
+        {
             mesh.material.color = Color.red;
         }
-        if(health <= 0 && !isDead){
+        if (health <= 0 && !isDead)
+        {
             OnDie();
         }
         yield return new WaitForSeconds(1f);
 
         isDamage = false;
-        foreach(MeshRenderer mesh in meshs){
+        foreach (MeshRenderer mesh in meshs)
+        {
             mesh.material.color = Color.white;
         }
 
     }
 
-    void OnDie(){
+    void OnDie()
+    {
         anim.SetTrigger("doDie");
         isDead = true;
         manager.GameOver();
@@ -215,7 +245,7 @@ public class Player : MonoBehaviour
 
     void Swap()
     {
-        if(isDead) return;
+        if (isDead) return;
         if (sDown1 && (!hasSkills[0] || equipIndex == 0)) return;
         if (sDown2 && (!hasSkills[1] || equipIndex == 1)) return;
         if (sDown3 && (!hasSkills[2] || equipIndex == 2)) return;
@@ -254,7 +284,9 @@ public class Player : MonoBehaviour
                 hasSkills[skillIndex] = true;
 
                 Destroy(nearObject);
-            }else if(item != null && item.type == Item.Type.Coin){
+            }
+            else if (item != null && item.type == Item.Type.Coin)
+            {
                 coin += 1;
                 Debug.Log("Coin :" + coin);
                 Destroy(nearObject);
@@ -270,7 +302,7 @@ public class Player : MonoBehaviour
         fireDelay += Time.deltaTime;
         isFireReady = equipSkill.attackSpeed < fireDelay;
 
-        if (isFireReady && !isSwap && Input.GetMouseButtonDown(0))
+        if (isFireReady && !isSwap && Input.GetMouseButton(0))
         {
             equipSkill.Use();
             anim.SetTrigger(equipSkill.type == Weapon.Type.Melee ? "doSwing" : "doShot");

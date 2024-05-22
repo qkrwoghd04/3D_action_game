@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     public GameObject menuPanel;
     public GameObject gamePanel;
     public GameObject overPanel;
+    public GameObject WinPanel;
+    public GameObject PausePanel;
     public Text maxScoreTxt;
 
     [Header("Game Panel")]
@@ -58,11 +60,6 @@ public class GameManager : MonoBehaviour
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
 
-        player.hasSkills[0] = true;
-        player.hasSkills[1] = true;
-        player.hasSkills[2] = true;
-        player.hasSkills[3] = true;
-
         isBattle = true;
         boss.isStart = true;
         player.gameObject.SetActive(true);
@@ -89,6 +86,26 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void GameWin(){
+        isBattle = false;
+        gamePanel.SetActive(false);
+        WinPanel.SetActive(true);
+        curScroeText.text = scoreTxt.text;
+        int maxScore = PlayerPrefs.GetInt("MaxScore");
+        if(player.score > maxScore){
+            bestText.gameObject.SetActive(true);
+            PlayerPrefs.SetInt("MaxScore", player.score);
+        }
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Win);
+    }
+    public void GamePause(){
+        isBattle = false;
+        gamePanel.SetActive(false);
+        PausePanel.SetActive(true);
+        PauseGame();
+    }
+
+    
     public void TrainingGround(){
         menuCam.SetActive(false);
         gameCam.SetActive(true);
@@ -143,6 +160,11 @@ public class GameManager : MonoBehaviour
             player.health = player.maxHealth;
             boss.curHealth = boss.maxHealth; 
         }
+
+         if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GamePause();
+        }
     }
 
     void LateUpdate()
@@ -182,14 +204,6 @@ public class GameManager : MonoBehaviour
 
         // 모든 코루틴 멈추기
         StopAllCoroutines();
-
-        // // Rigidbody 멈추기
-        // Rigidbody[] rigidbodies = FindObjectsOfType<Rigidbody>();
-        // foreach (Rigidbody rb in rigidbodies)
-        // {
-        //     rb.velocity = Vector3.zero;
-        //     rb.angularVelocity = Vector3.zero;
-        // }
 
         // Animator 멈추기
         Animator[] animators = FindObjectsOfType<Animator>();

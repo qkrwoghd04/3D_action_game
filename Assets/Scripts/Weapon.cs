@@ -74,7 +74,7 @@ public class Weapon : MonoBehaviour
             GameObject lightningEffect = Instantiate(lightningEffectPrefab, lightningPosition, rotation);
 
             // Destroy the lightning effect after 1 second
-            Destroy(lightningEffect, 1f);
+            Destroy(lightningEffect, 3f);
 
             // Apply damage to the enemy (assuming the enemy has a method to take damage)
             Enemy enemy = hitCollider.GetComponent<Enemy>();
@@ -93,7 +93,7 @@ public class Weapon : MonoBehaviour
     {
         GameObject instantBullet = Instantiate(bullet, bulletPos.position, bulletPos.rotation);
         Rigidbody bulletRigid = instantBullet.GetComponent<Rigidbody>();
-        bulletRigid.velocity = bulletPos.forward * 50;
+        bulletRigid.velocity = bulletPos.forward * 70;
 
         yield return new WaitForSeconds(0.1f);
         GameObject instantCase = Instantiate(bulletCase, bulletCasePos.position, bulletCasePos.rotation);

@@ -17,7 +17,8 @@ public class Boss : Enemy
     
     public GameObject tauntRangeIndicator; // 도발 범위 표시기에 대한 참조
     Vector3 lookVec;
-     private bool hasStarted; // 코루틴 시작 여부를 추적하는 변수
+    private bool hasStarted; // 코루틴 시작 여부를 추적하는 변수
+    public GameManager manager;
     // Vector3 tauntVec;
 
     void Awake()
@@ -39,6 +40,7 @@ public class Boss : Enemy
     {
         if(isDead){
             StopAllCoroutines();
+            manager.GameWin();
             return;
         }
         if(isLook){
@@ -52,9 +54,6 @@ public class Boss : Enemy
             StartCoroutine(Think());
         }
 
-        // else{
-        //     nav.SetDestination(tauntVec);
-        // }
     }
 
     public IEnumerator Think(){

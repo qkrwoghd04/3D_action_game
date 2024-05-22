@@ -1,7 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Rider.Unity.Editor;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -209,6 +206,7 @@ public class Enemy : MonoBehaviour
             // int ranCoin = Random.Range(0,3);
             // Instantiate(coin[ranCoin], transform.position, Quaternion.identity);
             if (enemyType != Type.D) Destroy(gameObject, 4);
+            
         }
     }
 
