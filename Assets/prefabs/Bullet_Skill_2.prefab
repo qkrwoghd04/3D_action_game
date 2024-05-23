@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3793502238404449158}
   - component: {fileID: 7156983192506449960}
   - component: {fileID: 5305518384738596173}
+  - component: {fileID: -5726539122573029140}
   m_Layer: 8
   m_Name: Bullet_Skill_2
   m_TagString: Bullet
@@ -265,3 +266,17 @@ MonoBehaviour:
   isRock: 0
   isMissile: 1
   isTaunt: 0
+--- !u!114 &-5726539122573029140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349106875094740095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67f04b5d3803c4e459eee758a47cc189, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  effectDuration: 3

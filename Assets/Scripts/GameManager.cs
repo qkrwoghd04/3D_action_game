@@ -39,8 +39,8 @@ public class GameManager : MonoBehaviour
     public RectTransform bossHealthGroup;
     public RectTransform bossHealthBar;
     public RectTransform uiGroup;
-    public Text curScroeText;
-    public Text bestText;
+    // public Text curScroeText;
+    // public Text bestText;
 
 
     void Awake()
@@ -75,13 +75,13 @@ public class GameManager : MonoBehaviour
         isBattle = false;
         gamePanel.SetActive(false);
         overPanel.SetActive(true);
-        curScroeText.text = scoreTxt.text;
+        // curScroeText.text = scoreTxt.text;
 
-        int maxScore = PlayerPrefs.GetInt("MaxScore");
-        if(player.score > maxScore){
-            bestText.gameObject.SetActive(true);
-            PlayerPrefs.SetInt("MaxScore", player.score);
-        }
+        // int maxScore = PlayerPrefs.GetInt("MaxScore");
+        // if(player.score > maxScore){
+        //     bestText.gameObject.SetActive(true);
+        //     PlayerPrefs.SetInt("MaxScore", player.score);
+        // }
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Lose);
 
     }
@@ -90,19 +90,18 @@ public class GameManager : MonoBehaviour
         isBattle = false;
         gamePanel.SetActive(false);
         WinPanel.SetActive(true);
-        curScroeText.text = scoreTxt.text;
-        int maxScore = PlayerPrefs.GetInt("MaxScore");
-        if(player.score > maxScore){
-            bestText.gameObject.SetActive(true);
-            PlayerPrefs.SetInt("MaxScore", player.score);
-        }
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Win);
+        // curScroeText.text = scoreTxt.text;
+        // int maxScore = PlayerPrefs.GetInt("MaxScore");
+        // if(player.score > maxScore){
+        //     bestText.gameObject.SetActive(true);
+        //     PlayerPrefs.SetInt("MaxScore", player.score);
+        // }
+        // AudioManager.instance.PlaySfx(AudioManager.Sfx.Win);
     }
     public void GamePause(){
-        isBattle = false;
+        
         gamePanel.SetActive(false);
         PausePanel.SetActive(true);
-        PauseGame();
     }
 
     
@@ -170,8 +169,8 @@ public class GameManager : MonoBehaviour
     void LateUpdate()
     {
         // UI
-        scoreTxt.text = string.Format("{0:n0}", player.score);
-        stageTxt.text = "STAGE" + stage;
+        // scoreTxt.text = string.Format("{0:n0}", player.score);
+        // stageTxt.text = "STAGE" + stage;
         int hour = (int)(playTime / 3600);
         int min = (int)((playTime - hour * 3600) / 60);
         int second = (int)(playTime % 60);
