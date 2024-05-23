@@ -18,31 +18,53 @@ public class Weapon : MonoBehaviour
     public GameObject bulletCase;
     public GameObject lightningEffectPrefab; // Add reference to the lightning effect prefab
     public float lightningStrikeRadius = 100f; // Radius to detect enemies for lightning strike
+    private bool isOnCooldown = false;
+
+    public SkillCooldownUI cooldownUI; // SkillCooldownUI 스크립트 참조
 
 
 
     public void Use()
     {
+        if (isOnCooldown)
+        {
+            Debug.Log("Weapon is on cooldown.");
+            return;
+        }
+
         if (type == Type.Melee)
         {
             StopCoroutine("Swing");
             StartCoroutine("Swing");
+            StartCoroutine(Cooldown(3f));
         }
         else if (type == Type.Shot)
         {
             StopCoroutine("Shot");
             StartCoroutine("Shot");
+            StartCoroutine(Cooldown(0.5f));
         }
         else if (type == Type.ParabolaShot)
         {
             StopCoroutine("ParabolaShot");
             StartCoroutine("ParabolaShot");
+            StartCoroutine(Cooldown(1f));
         }
         else if (type == Type.Throw)
         {
             StopCoroutine("Throw");
             StartCoroutine("Throw");
+            // Start the cooldown with a duration of 5 seconds
+            StartCoroutine(Cooldown(5f));
         }
+    }
+
+    IEnumerator Cooldown(float cooldownDuration)
+    {
+        isOnCooldown = true;
+        cooldownUI.StartCooldown(cooldownDuration); // 쿨타임 UI 시작
+        yield return new WaitForSeconds(cooldownDuration);
+        isOnCooldown = false;
     }
 
     IEnumerator Swing()
@@ -101,6 +123,9 @@ public class Weapon : MonoBehaviour
         Vector3 caseVec = bulletCasePos.forward * Random.Range(-3, -2) + Vector3.up * Random.Range(2, 3);
         caseRigid.AddForce(caseVec, ForceMode.Impulse);
         caseRigid.AddTorque(Vector3.up * 10, ForceMode.Impulse);
+
+        // Start the cooldown with a duration of 0.5 seconds
+        StartCoroutine(Cooldown(0.5f));
     }
 
     IEnumerator ParabolaShot()

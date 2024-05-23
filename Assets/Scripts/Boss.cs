@@ -124,7 +124,7 @@ public class Boss : Enemy
         yield return new WaitForSeconds(1f);
         isLook = true;
         nav.isStopped = true;
-        boxCollider.enabled = false;
+        // boxCollider.enabled = false;
         StartCoroutine(Think());
     }
 

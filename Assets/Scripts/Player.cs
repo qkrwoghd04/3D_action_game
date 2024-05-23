@@ -302,9 +302,15 @@ public class Player : MonoBehaviour
         fireDelay += Time.deltaTime;
         isFireReady = equipSkill.attackSpeed < fireDelay;
 
-        if (isFireReady && !isSwap && Input.GetMouseButton(0))
+        if (isFireReady && !isSwap && !(equipSkill.type == Weapon.Type.Throw) && Input.GetMouseButton(0))
         {
             equipSkill.Use();
+            anim.SetTrigger(equipSkill.type == Weapon.Type.Melee ? "doSwing" : "doShot");
+            fireDelay = 0;
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
+        }
+        if(isFireReady && !isSwap && (equipSkill.type == Weapon.Type.Throw) && Input.GetMouseButtonDown(0)){
+             equipSkill.Use();
             anim.SetTrigger(equipSkill.type == Weapon.Type.Melee ? "doSwing" : "doShot");
             fireDelay = 0;
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);

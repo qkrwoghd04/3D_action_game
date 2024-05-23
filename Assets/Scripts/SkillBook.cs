@@ -11,6 +11,8 @@ public class SkillBook : MonoBehaviour
 
     public GameObject[] skillObj;
     public int[] skillCoin;
+    public Text[] unlockTxt;
+    public Text[] lockTxt;
 
     void Enter(Player player){
         enterPlayer = player;
@@ -31,5 +33,20 @@ public class SkillBook : MonoBehaviour
 
         enterPlayer.coin -= coin;
         enterPlayer.hasSkills[index] = true;
+
+        // 업데이트된 스킬 상태를 UI에 반영
+        UpdateSkillUI(index);
+        
+    }
+
+    // 스킬의 잠금 해제 상태에 따라 UI 업데이트
+    void UpdateSkillUI(int index) {
+        if (enterPlayer.hasSkills[index]) {
+            unlockTxt[index].gameObject.SetActive(true);
+            lockTxt[index].gameObject.SetActive(false);
+        } else {
+            unlockTxt[index].gameObject.SetActive(false);
+            lockTxt[index].gameObject.SetActive(true);
+        }
     }
 }
