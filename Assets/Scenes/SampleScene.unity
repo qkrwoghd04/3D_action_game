@@ -311,6 +311,7 @@ MonoBehaviour:
   bulletCase: {fileID: 4165368254850562492, guid: ef8c9141d5df1e04b97dbf000e8d9d9a, type: 3}
   lightningEffectPrefab: {fileID: 0}
   lightningStrikeRadius: 0
+  cooldownUI: {fileID: 540465934}
 --- !u!1 &99852520
 GameObject:
   m_ObjectHideFlags: 0
@@ -1322,6 +1323,7 @@ GameObject:
   - component: {fileID: 222080293}
   - component: {fileID: 222080295}
   - component: {fileID: 222080294}
+  - component: {fileID: 222080296}
   m_Layer: 5
   m_Name: Weapon 2 Image
   m_TagString: Untagged
@@ -1369,7 +1371,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 3260f72e5b6eec24587b9132cb1ae0a0, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1386,6 +1388,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 222080292}
   m_CullTransparentMesh: 1
+--- !u!114 &222080296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222080292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb666a42aa7f5254b97a565b8171645d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownImage: {fileID: 222080294}
 --- !u!1 &270037016
 GameObject:
   m_ObjectHideFlags: 0
@@ -3168,6 +3183,7 @@ GameObject:
   - component: {fileID: 540465931}
   - component: {fileID: 540465933}
   - component: {fileID: 540465932}
+  - component: {fileID: 540465934}
   m_Layer: 5
   m_Name: Weapon 1 Image
   m_TagString: Untagged
@@ -3215,12 +3231,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 744566287c3cef64f9b897280e5d9b1a, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
-  m_FillClockwise: 1
+  m_FillClockwise: 0
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
@@ -3232,6 +3248,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540465930}
   m_CullTransparentMesh: 1
+--- !u!114 &540465934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540465930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb666a42aa7f5254b97a565b8171645d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownImage: {fileID: 540465932}
 --- !u!1001 &578257658
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4309,6 +4338,67 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 755590685}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &759231743
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -539043163609255626, guid: ea6538088e004e34ba666c426237b29f, type: 3}
+      propertyPath: isMissile
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970891407685482419, guid: ea6538088e004e34ba666c426237b29f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970891407685482419, guid: ea6538088e004e34ba666c426237b29f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970891407685482419, guid: ea6538088e004e34ba666c426237b29f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970891407685482419, guid: ea6538088e004e34ba666c426237b29f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970891407685482419, guid: ea6538088e004e34ba666c426237b29f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970891407685482419, guid: ea6538088e004e34ba666c426237b29f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970891407685482419, guid: ea6538088e004e34ba666c426237b29f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970891407685482419, guid: ea6538088e004e34ba666c426237b29f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970891407685482419, guid: ea6538088e004e34ba666c426237b29f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970891407685482419, guid: ea6538088e004e34ba666c426237b29f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8934751762308142015, guid: ea6538088e004e34ba666c426237b29f, type: 3}
+      propertyPath: m_Name
+      value: Bullet_Skill_4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ea6538088e004e34ba666c426237b29f, type: 3}
 --- !u!1 &770920682
 GameObject:
   m_ObjectHideFlags: 0
@@ -4697,6 +4787,7 @@ GameObject:
   - component: {fileID: 818562038}
   - component: {fileID: 818562040}
   - component: {fileID: 818562039}
+  - component: {fileID: 818562041}
   m_Layer: 5
   m_Name: Weapon 4 Image
   m_TagString: Untagged
@@ -4744,7 +4835,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 1c436558df0caa04eb65bf6f8d065918, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -4761,6 +4852,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 818562037}
   m_CullTransparentMesh: 1
+--- !u!114 &818562041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818562037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb666a42aa7f5254b97a565b8171645d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownImage: {fileID: 818562039}
 --- !u!1 &833665062
 GameObject:
   m_ObjectHideFlags: 0
@@ -5027,6 +5131,7 @@ MonoBehaviour:
   bulletCase: {fileID: 4165368254850562492, guid: ef8c9141d5df1e04b97dbf000e8d9d9a, type: 3}
   lightningEffectPrefab: {fileID: 0}
   lightningStrikeRadius: 0
+  cooldownUI: {fileID: 222080296}
 --- !u!1 &865119218
 GameObject:
   m_ObjectHideFlags: 0
@@ -7613,6 +7718,7 @@ GameObject:
   - component: {fileID: 1516705633}
   - component: {fileID: 1516705635}
   - component: {fileID: 1516705634}
+  - component: {fileID: 1516705636}
   m_Layer: 5
   m_Name: Weapon 3 Image
   m_TagString: Untagged
@@ -7660,7 +7766,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 4e5b816343df5574c8a051077a2156b9, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -7677,6 +7783,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1516705632}
   m_CullTransparentMesh: 1
+--- !u!114 &1516705636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516705632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb666a42aa7f5254b97a565b8171645d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownImage: {fileID: 1516705634}
 --- !u!1 &1540290076
 GameObject:
   m_ObjectHideFlags: 0
@@ -7921,6 +8040,7 @@ MonoBehaviour:
   bulletCase: {fileID: 4165368254850562492, guid: ef8c9141d5df1e04b97dbf000e8d9d9a, type: 3}
   lightningEffectPrefab: {fileID: 0}
   lightningStrikeRadius: 0
+  cooldownUI: {fileID: 1516705636}
 --- !u!1 &1677105195
 GameObject:
   m_ObjectHideFlags: 0
@@ -9387,6 +9507,7 @@ MonoBehaviour:
   bulletCase: {fileID: 0}
   lightningEffectPrefab: {fileID: 8934751762308142015, guid: ea6538088e004e34ba666c426237b29f, type: 3}
   lightningStrikeRadius: 30
+  cooldownUI: {fileID: 818562041}
 --- !u!1 &2016080574
 GameObject:
   m_ObjectHideFlags: 0
@@ -10227,3 +10348,4 @@ SceneRoots:
   - {fileID: 1287289380}
   - {fileID: 946538605}
   - {fileID: 1511724981}
+  - {fileID: 759231743}

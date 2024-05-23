@@ -76,10 +76,10 @@ public class Weapon : MonoBehaviour
         // Call the Lightning Strike effect
         StartCoroutine(LightningStrike());
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(1.5f);
         meleeArea.enabled = false;
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(1.5f);
         trailEffect.enabled = false;
     }
 
@@ -95,6 +95,7 @@ public class Weapon : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(90, 0, 0); // Rotate 90 degrees around the x-axis
             GameObject lightningEffect = Instantiate(lightningEffectPrefab, lightningPosition, rotation);
 
+            
             // Destroy the lightning effect after 1 second
             Destroy(lightningEffect, 3f);
 
